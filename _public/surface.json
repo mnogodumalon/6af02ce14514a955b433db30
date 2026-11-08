@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "pages": [
+    {
+      "slug": "anmeldung",
+      "component": "Anmeldung",
+      "title": "Anmeldung",
+      "link_param": {
+        "name": "veranstaltung",
+        "entity": "veranstaltungen",
+        "label_field": "titel"
+      },
+      "endpoints": [
+        {
+          "entity": "veranstaltungen",
+          "op": "list",
+          "fields": [
+            "titel",
+            "beschreibung",
+            "datum",
+            "ort",
+            "headerbild"
+          ],
+          "max_records": 200
+        },
+        {
+          "entity": "anmeldungen",
+          "op": "list",
+          "fields": [
+            "veranstaltung",
+            "email",
+            "status"
+          ],
+          "max_records": 500
+        },
+        {
+          "entity": "anmeldungen",
+          "op": "create",
+          "fields": [
+            "veranstaltung",
+            "teilnehmer_vorname",
+            "teilnehmer_nachname",
+            "email",
+            "anmerkungen"
+          ],
+          "preset_fields": {
+            "status": "angemeldet"
+          }
+        }
+      ]
+    }
+  ]
+}
