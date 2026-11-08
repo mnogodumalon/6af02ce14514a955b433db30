@@ -1,0 +1,16 @@
+Wir führen immer wieder Veranstaltungen durch zu denen sich die Interessenten online anmelden müssen.
+
+Für jede Veranstaltung benötigen wir einen Link zum jeweiligen Anmelde-Formular und einen QR-Code dafür.
+
+Teilnehmende scannen den QR-Code und sehen ohne Anmeldung nur ein ganz einfaches Anmeldeformular mit Informationen zur Veranstaltung (mindestens Titel, Beschreibung, Datum,  Ort). Zur optischen Verschönerung kann durch den Administratorein Hintergrundbild oder ein Headerbild hochgeladen werden. Der Interessent gibt auf den Anmeldeformularzwingend Name, Vorname, E-Mail-Adresse und optional Anmerkungen ein.
+
+Im Footer müssen Links zu Impressum- und zur Datenschutz-Seite von LivingApps eingefügt werden. Der Footer soll optisch abgetrennt sein.
+
+Es muss eine maximale Teilnehmerzahl und eine Warteliste geben. Wenn die Teilnehmerzahl
+überschritten ist, dann wird die anmeldende Person auf der Antwortseite darauf aufmerksam gemacht, dass sie auf der Warteliste steht. Auf der Antwortseite sollen alle Angaben der Person nochmals angezeigt werden.
+
+Vor dem Eintragen der Anmeldung muss geprüft werden, ob bereits früher eine Anmeldung mit eine E-Mailadresse erfolgt ist. Doppelanmeldubgrn müssen strikt vermieden werden. Gegebenenfalls wird nach dem Absende-Versuch auf der Antwortseite angezeigt, dass die Anmeldung nicht vorgenommen werden konnte, da bereits eine Anmeldung mit dieser E-Mail-Adresse zu dieser Veranstaltung vorliegt.
+
+Veranstaltungen lege ich als Administratorselbst an. Die Deaktivierung von Teilnehmenden (wegen Absage) und die Aktivierung einer Person auf der Warteliste nehme ich manuell vor.
+
+Erstelle eine Anwendung, die alle diese Anforderungen erfüllt.

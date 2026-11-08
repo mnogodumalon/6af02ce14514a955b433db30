@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "language": "de",
+  "understanding": {
+    "summary": "Du legst Veranstaltungen selbst an, mit Titel, Beschreibung, Datum, Ort, Headerbild und maximaler Teilnehmerzahl. Für jede Veranstaltung gibt es einen eigenen Link zum Anmeldeformular samt QR-Code. Interessenten sehen dort ohne Login die Veranstaltungsinfos und tragen Vorname, Nachname, E-Mail und optional Anmerkungen ein. Doppelte Anmeldungen mit derselben E-Mail zur selben Veranstaltung werden abgelehnt. Ist die Teilnehmerzahl erreicht, kommt die Person auf die Warteliste. Die Antwortseite zeigt alle Angaben nochmals und den Hinweis auf Warteliste oder Ablehnung. Absagen und das Nachrücken von der Warteliste machst du manuell.",
+    "outside_users": [
+      {
+        "who": "Interessenten",
+        "does": "öffnen den Link oder QR-Code, sehen die Veranstaltung und melden sich an"
+      }
+    ],
+    "roles": [
+      "Administrator (Veranstalter)",
+      "Interessent (ohne Login)"
+    ],
+    "main_tasks": [
+      "Veranstaltung anlegen und Headerbild hochladen",
+      "Anmelde-Link und QR-Code je Veranstaltung weitergeben",
+      "Anmeldungen einsehen, absagen und Warteliste manuell nachrücken lassen"
+    ],
+    "platform_roles": [
+      {
+        "persona": "Administrator (Veranstalter)",
+        "role": "administrator",
+        "apps": [
+          "veranstaltungen",
+          "anmeldungen"
+        ]
+      }
+    ],
+    "wish_kind": "plain",
+    "wish_signals": []
+  },
+  "flows": [],
+  "public_pages": [
+    {
+      "slug": "anmeldung",
+      "purpose": "Interessenten öffnen den Link oder QR-Code einer Veranstaltung und sehen ohne Login Titel, Beschreibung, Datum, Ort und das Headerbild. Sie tragen Vorname, Nachname, E-Mail und optional Anmerkungen ein. Die Antwortseite zeigt danach alle Angaben nochmals, den Status (angemeldet oder Warteliste) oder den Hinweis, dass mit dieser E-Mail-Adresse schon eine Anmeldung zu dieser Veranstaltung vorliegt. Im abgetrennten Footer stehen Links zu Impressum und Datenschutz von LivingApps.",
+      "publish": true,
+      "lists": [
+        {
+          "entity": "veranstaltungen",
+          "columns": [
+            "titel",
+            "beschreibung",
+            "datum",
+            "ort",
+            "headerbild"
+          ],
+          "filter": null,
+          "max_records": null
+        },
+        {
+          "entity": "anmeldungen",
+          "columns": [
+            "veranstaltung",
+            "email",
+            "status"
+          ],
+          "filter": null,
+          "max_records": null
+        }
+      ],
+      "creates": [
+        {
+          "entity": "anmeldungen",
+          "fields": {
+            "veranstaltung": "picked",
+            "teilnehmer_vorname": "user",
+            "teilnehmer_nachname": "user",
+            "email": "user",
+            "anmerkungen": "user"
+          },
+          "fixed": {
+            "status": "angemeldet"
+          }
+        }
+      ],
+      "visitor_fields": [],
+      "page_sets": [],
+      "brief": "# Public page `anmeldung`\nInteressenten öffnen den Link oder QR-Code einer Veranstaltung und sehen ohne Login Titel, Beschreibung, Datum, Ort und das Headerbild. Sie tragen Vorname, Nachname, E-Mail und optional Anmerkungen ein. Die Antwortseite zeigt danach alle Angaben nochmals, den Status (angemeldet oder Warteliste) oder den Hinweis, dass mit dieser E-Mail-Adresse schon eine Anmeldung zu dieser Veranstaltung vorliegt. Im abgetrennten Footer stehen Links zu Impressum und Datenschutz von LivingApps.\n\n## Lists (declare exactly these in the surface)\n- `veranstaltungen`: columns `titel`, `beschreibung`, `datum`, `ort`, `headerbild`\n- `anmeldungen`: columns `veranstaltung`, `email`, `status`\n\n## Creates (declare exactly these in the surface)\n- `anmeldungen`: visitor fields `veranstaltung`, `teilnehmer_vorname`, `teilnehmer_nachname`, `email`, `anmerkungen`; preset_fields {\"status\": \"angemeldet\"}\n\n## Only the linked record's children\n- `anmeldungen`: keep ONLY the rows whose reference to `veranstaltungen` is the id from `?veranstaltung=` (`fieldRef(r, '<its reference field>') === linkedId`, the field is in the list's columns) — never `records[0]` of all (EF-27: the first ACTIVE interaction app-wide was another event's). The send-time check compares the same: the pointer AND the linked record.\n\n## Link parameter (declare exactly this in the surface)\n- `link_param: { name: 'veranstaltung', entity: 'veranstaltungen', label_field: 'titel' }` — the page opens as `#/public/anmeldung?veranstaltung=<id>` and reads THAT `veranstaltungen` record from its list endpoint; without the parameter it shows a short notice (never a list to pick from — the owner hands out one link per record).\n\n## Availability — mechanical, write nothing for it\nA picker (`useRecordSearch`) never offers a record another record already takes (a booked slot) — the layer leaves it out. To SHOW booked periods, call `useOccupancy(port, '<entity>')` and hand `blocked` to AvailabilityRangePicker; the integration gives the page exactly that read (dates or the reference, never who booked). Never declare a list of bookings with names or contacts to work availability out yourself.\n\nPublish: never from here — every page starts as a draft; the owner publishes it under Verwaltung → Öffentliche Seiten after the build (the plan wishes it published)\n"
+    }
+  ],
+  "tools": [
+    {
+      "id": "anmeldung-pruefen",
+      "purpose": "Läuft bei jeder neuen Anmeldung. Gibt es zur selben Veranstaltung schon eine frühere Anmeldung mit derselben E-Mail-Adresse, die nicht abgesagt ist, wird die neue auf „Abgesagt“ gesetzt und nicht gelöscht; die frühere gilt. Sonst wird die Zahl der Anmeldungen mit Status „Angemeldet“ dieser Veranstaltung mit der maximalen Teilnehmerzahl verglichen. Ist sie erreicht, kommt die neue Anmeldung auf „Warteliste“."
+    },
+    {
+      "id": "anmeldungen-doppelt-verhindern",
+      "purpose": "Führt in anmeldungen einen später angelegten Datensatz mit derselben „E-Mail-Adresse“ in den früheren zusammen (fehlende Werte übernehmen) und löscht dann den späteren — der frühere gilt"
+    }
+  ],
+  "covered_by_platform": [
+    {
+      "wish": "Teilnehmende deaktivieren (Absage) und Wartelistenplätze manuell aktivieren",
+      "feature": "record_form"
+    },
+    {
+      "wish": "Veranstaltungen selbst anlegen und Headerbild hochladen",
+      "feature": "record_form"
+    },
+    {
+      "wish": "Anmeldungen je Veranstaltung auswerten",
+      "feature": "distribution_view"
+    }
+  ],
+  "ownership": {
+    "anmeldungen": {
+      "status": "tool:anmeldung-pruefen"
+    }
+  },
+  "dashboard": {
+    "focus": [
+      "Anmeldungen je Veranstaltung",
+      "Wartelisten-Einträge",
+      "Kommende Veranstaltungen"
+    ],
+    "hints": [
+      "Zeige je Veranstaltung die Zahl der angemeldeten Personen im Verhältnis zur maximalen Teilnehmerzahl",
+      "Hebe Anmeldungen auf der Warteliste hervor, damit sie manuell nachrücken können"
+    ],
+    "views": [],
+    "writes": [],
+    "wishes": []
+  }
+}

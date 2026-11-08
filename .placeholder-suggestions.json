@@ -1,0 +1,16 @@
+{
+  "VeranstaltungenDialog.tsx": {
+    "titel": "z. B. Sommerfest 2026",
+    "beschreibung": "Worum geht es bei der Veranstaltung?",
+    "datum": "Wann findet sie statt?",
+    "ort": "z. B. Stadthalle Hamburg",
+    "max_teilnehmer": "z. B. 100"
+  },
+  "AnmeldungenDialog.tsx": {
+    "veranstaltung": "Welche Veranstaltung?",
+    "teilnehmer_vorname": "z. B. Anna",
+    "teilnehmer_nachname": "z. B. Müller",
+    "email": "z. B. anna.mueller@beispiel.de",
+    "anmerkungen": "Besondere Wünsche oder Hinweise"
+  }
+}

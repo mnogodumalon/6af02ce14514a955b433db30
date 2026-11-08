@@ -1,0 +1,18 @@
+{
+  "entities": {
+    "Veranstaltungen": {
+      "placeholders_set": 5,
+      "defaults_keys": [
+        "datum"
+      ],
+      "computed_keys": [],
+      "reason": "Keine Formel, da die Veranstaltung nur Stammdaten ohne Datumspaar oder Preisfelder enthält."
+    },
+    "Anmeldungen": {
+      "placeholders_set": 5,
+      "defaults_keys": [],
+      "computed_keys": [],
+      "reason": "Keine Formel, da die Anmeldung kein Datumspaar und keine Mengen- oder Preisfelder enthält, nur die maximale Teilnehmerzahl der Veranstaltung ist numerisch erreichbar und ergibt ohne Bedingung keine sinnvolle Berechnung."
+    }
+  }
+}
